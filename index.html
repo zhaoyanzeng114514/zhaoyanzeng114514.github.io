@@ -3,22 +3,25 @@
 
 <head>
   <meta charset="UTF-8">
-  <title>兑换码验证</title>
+  <title>兑换码验证与跳转</title>
 </head>
 
 <body>
-  <h1>兑换码验证</h1>
+  <h1>兑换码验证与跳转</h1>
   <input type="text" id="codeInput" placeholder="请输入兑换码">
-  <button onclick="checkCode()">验证</button>
+  <button onclick="checkCode()">验证并跳转</button>
   <p id="result"></p>
 
   <script>
     function checkCode() {
-      // 这里假设正确的兑换码为"ABC123"，实际应用中应从服务器获取或进行更复杂的验证逻辑
-      const correctCode = "ABC123";
+      const codeMap = {
+        "CODE1": "page1.html",
+        "CODE2": "page2.html",
+        "CODE3": "page3.html"
+      };
       const inputCode = document.getElementById('codeInput').value;
-      if (inputCode === correctCode) {
-        document.getElementById('result').innerHTML = "兑换码正确！";
+      if (codeMap[inputCode]) {
+        window.location.href = codeMap[inputCode];
       } else {
         document.getElementById('result').innerHTML = "兑换码错误！";
       }
