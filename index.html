@@ -15,14 +15,14 @@
             font-family: Arial, sans-serif;
         }
 
-      .container {
+       .container {
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
         }
 
-      .form-wrapper {
+       .form-wrapper {
             position: relative;
             width: 80%;
             max-width: 400px;
@@ -39,6 +39,12 @@
             margin-bottom: 20px;
         }
 
+        p {
+            color: #fff;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
         input[type="text"] {
             width: 100%;
             padding: 10px;
@@ -52,7 +58,7 @@
         button {
             width: 100%;
             padding: 10px;
-            background-color: #4CAF50;
+            background-color: magenta;
             color: white;
             border: none;
             border-radius: 5px;
@@ -72,6 +78,7 @@
     <div class="container">
         <div class="form-wrapper">
             <h2>Ins 风兑换中心</h2>
+            <p>输入您的“Inder Card”上的兑换码以兑换祝福语</p>
             <input type="text" placeholder="请输入兑换码">
             <button>兑换</button>
             <p class="error-message"></p>
