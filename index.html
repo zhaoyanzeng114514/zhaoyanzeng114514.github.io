@@ -101,11 +101,26 @@
         const input = document.querySelector('input');
         const errorMessage = document.querySelector('.error-message');
 
+        // 定义多个有效兑换码
+        const validCodes = ['code1', 'code2', 'code3'];
+
         button.addEventListener('click', () => {
             const code = input.value;
-            if (code === 'validCode') {
-                // 假设兑换码正确，进行跳转
-                window.location.href = 'successPage.html';
+            if (validCodes.includes(code)) {
+                switch (code) {
+                    case 'code1':
+                        // 针对 code1 的操作，比如跳转到特定页面
+                        window.location.href = 'pageForCode1.html';
+                        break;
+                    case 'code2':
+                        // 针对 code2 的操作
+                        window.location.href = 'pageForCode2.html';
+                        break;
+                    case 'code3':
+                        // 针对 code3 的操作
+                        window.location.href = 'pageForCode3.html';
+                        break;
+                }
             } else {
                 errorMessage.textContent = 'Opps！请您检查您的兑换码是否正确';
             }
