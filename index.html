@@ -6,24 +6,42 @@
   <title>✨梦幻兑换码验证与跳转✨</title>
   <style>
     body {
+      margin: 0;
+      padding: 0;
       font-family: 'Helvetica Neue', sans-serif;
-      background-color: #fafafa;
+      background: url('index.png') no-repeat center center fixed;
+      background-size: cover;
+    }
+
+   .container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+   .form-wrapper {
+      background-color: rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(10px);
+      border-radius: 10px;
       padding: 20px;
+      text-align: center;
     }
 
     h1 {
-      color: #333;
-      text-align: center;
-      font-size: 32px;
-      margin-bottom: 30px;
+      color: #fff;
+      font-size: 28px;
+      margin-bottom: 20px;
     }
 
     input[type="text"] {
       padding: 10px;
-      border: 1px solid #ccc;
+      border: none;
       border-radius: 5px;
       width: 250px;
       font-size: 16px;
+      background-color: rgba(255, 255, 255, 0.5);
+      color: #333;
     }
 
     button {
@@ -42,19 +60,22 @@
     }
 
     p {
-      color: #666;
+      color: #fff;
       font-size: 18px;
-      text-align: center;
       margin-top: 20px;
     }
   </style>
 </head>
 
 <body>
-  <h1>✨兑换码开启奇幻之旅✨</h1>
-  <input type="text" id="codeInput" placeholder="💖请输入兑换码💖">
-  <button onclick="checkCode()">验证并跳转🚀</button>
-  <p id="result"></p>
+  <div class="container">
+    <div class="form-wrapper">
+      <h1>✨兑换码开启奇幻之旅✨</h1>
+      <input type="text" id="codeInput" placeholder="💖请输入兑换码💖">
+      <button onclick="checkCode()">验证并跳转🚀</button>
+      <p id="result"></p>
+    </div>
+  </div>
 
   <script>
     function checkCode() {
