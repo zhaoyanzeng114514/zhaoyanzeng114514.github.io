@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>兑换页面</title>
+    <title>Ins 风兑换页面</title>
     <style>
         body {
             margin: 0;
@@ -15,14 +15,14 @@
             font-family: Arial, sans-serif;
         }
 
-       .container {
+      .container {
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
         }
 
-       .form-wrapper {
+      .form-wrapper {
             position: relative;
             width: 80%;
             max-width: 400px;
@@ -30,6 +30,13 @@
             background-color: rgba(255, 255, 255, 0.2);
             border-radius: 10px;
             backdrop-filter: blur(10px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            color: #fff;
+            text-align: center;
+            margin-bottom: 20px;
         }
 
         input[type="text"] {
@@ -51,16 +58,40 @@
             border-radius: 5px;
             cursor: pointer;
         }
+
+       .error-message {
+            color: red;
+            font-size: 12px;
+            text-align: center;
+            margin-top: 5px;
+        }
     </style>
 </head>
 
 <body>
     <div class="container">
         <div class="form-wrapper">
+            <h2>Ins 风兑换中心</h2>
             <input type="text" placeholder="请输入兑换码">
             <button>兑换</button>
+            <p class="error-message"></p>
         </div>
     </div>
+    <script>
+        const button = document.querySelector('button');
+        const input = document.querySelector('input');
+        const errorMessage = document.querySelector('.error-message');
+
+        button.addEventListener('click', () => {
+            const code = input.value;
+            if (code === 'validCode') {
+                // 假设兑换码正确，进行跳转
+                window.location.href = 'successPage.html';
+            } else {
+                errorMessage.textContent = '兑换码错误，请重新输入。';
+            }
+        });
+    </script>
 </body>
 
 </html>
