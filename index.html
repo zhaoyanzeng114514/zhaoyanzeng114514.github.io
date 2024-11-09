@@ -1,128 +1,66 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <title>✨梦幻兑换码验证与跳转✨</title>
-  <style>
-    body {
-      margin: 0;
-      padding: 0;
-      font-family: 'Helvetica Neue', sans-serif;
-      background: url('index.png') no-repeat center center fixed;
-      background-size: cover;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>兑换页面</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-image: url('index.png');
+            background-size: cover;
+            background-repeat: no-repeat;
+            font-family: Arial, sans-serif;
+        }
 
-   .container {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
-    }
+       .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
 
-   .form-wrapper {
-      background-color: rgba(255, 255, 255, 0.2);
-      backdrop-filter: blur(10px);
-      padding: 20px;
-      border-radius: 10px;
-      width: 80%;
-      max-width: 400px;
-    }
+       .form-wrapper {
+            position: relative;
+            width: 80%;
+            max-width: 400px;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+        }
 
-    h1 {
-      color: #fff;
-      font-size: 28px;
-      margin-bottom: 20px;
-    }
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: none;
+            border-radius: 5px;
+            background-color: rgba(255, 255, 255, 0.5);
+            color: #333;
+        }
 
-    p.description {
-      color: #fff;
-      font-size: 18px;
-      margin-bottom: 20px;
-    }
-
-    input[type="text"] {
-      padding: 10px;
-      border: none;
-      border-radius: 5px;
-      background-color: rgba(255, 255, 255, 0.5);
-      color: #333;
-      width: 100%;
-      font-size: 16px;
-    }
-
-    button {
-      padding: 10px 20px;
-      background-color: #ff69b4;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      font-size: 16px;
-      transition: background-color 0.3s ease;
-    }
-
-    button:hover {
-      background-color: #ff4799;
-    }
-
-    p.result {
-      color: #fff;
-      font-size: 18px;
-      margin-top: 20px;
-    }
-
-    @media (max-width: 768px) {
-      h1 {
-        font-size: 24px;
-      }
-
-      p.description {
-        font-size: 16px;
-      }
-
-      input[type="text"] {
-        font-size: 14px;
-      }
-
-      button {
-        font-size: 14px;
-      }
-
-      p.result {
-        font-size: 16px;
-      }
-    }
-  </style>
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
 </head>
 
 <body>
-  <div class="container">
-    <div class="form-wrapper">
-      <h1>✨兑换码开启奇幻之旅✨</h1>
-      <p class="description">输入您的“Inder Card”上的兑换码以兑换祝福语。</p>
-      <input type="text" id="codeInput" placeholder="💖请输入兑换码💖">
-      <button onclick="checkCode()">验证并跳转🚀</button>
-      <p class="result" id="result"></p>
+    <div class="container">
+        <div class="form-wrapper">
+            <input type="text" placeholder="请输入兑换码">
+            <button>兑换</button>
+        </div>
     </div>
-  </div>
-
-  <script>
-    function checkCode() {
-      const codeMap = {
-        "CODE1": "page1.html",
-        "CODE2": "page2.html",
-        "CODE3": "page3.html"
-      };
-      const inputCode = document.getElementById('codeInput').value;
-      if (codeMap[inputCode]) {
-        window.location.href = codeMap[inputCode];
-      } else {
-        document.getElementById('result').innerHTML = "😔兑换码错误哦！😔";
-      }
-    }
-  </script>
 </body>
 
 </html>
