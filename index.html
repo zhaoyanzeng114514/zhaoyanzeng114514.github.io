@@ -3,27 +3,71 @@
 
 <head>
   <meta charset="UTF-8">
-  <title>兑换码验证与跳转</title>
+  <title>✨梦幻兑换码验证与跳转✨</title>
+  <style>
+    body {
+      font-family: 'Helvetica Neue', sans-serif;
+      background-color: #fafafa;
+      padding: 20px;
+    }
+
+    h1 {
+      color: #333;
+      text-align: center;
+      font-size: 32px;
+      margin-bottom: 30px;
+    }
+
+    input[type="text"] {
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      width: 250px;
+      font-size: 16px;
+    }
+
+    button {
+      padding: 10px 20px;
+      background-color: #ff69b4;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #ff4799;
+    }
+
+    p {
+      color: #666;
+      font-size: 18px;
+      text-align: center;
+      margin-top: 20px;
+    }
+  </style>
 </head>
 
 <body>
-  <h1>兑换码验证与跳转</h1>
-  <input type="text" id="codeInput" placeholder="请输入兑换码">
-  <button onclick="checkCode()">验证并跳转</button>
+  <h1>✨兑换码开启奇幻之旅✨</h1>
+  <input type="text" id="codeInput" placeholder="💖请输入兑换码💖">
+  <button onclick="checkCode()">验证并跳转🚀</button>
   <p id="result"></p>
 
   <script>
     function checkCode() {
       const codeMap = {
-        "HKB8U-OE8SHD": "A.html",
-        "LISVC-2HDISB": "B.html",
-        "DGYSB-2JEBVU": "C.html"
+        "CODE1": "page1.html",
+        "CODE2": "page2.html",
+        "CODE3": "page3.html"
       };
       const inputCode = document.getElementById('codeInput').value;
       if (codeMap[inputCode]) {
         window.location.href = codeMap[inputCode];
       } else {
-        document.getElementById('result').innerHTML = "兑换码错误！";
+        document.getElementById('result').innerHTML = "😔兑换码错误哦！😔";
       }
     }
   </script>
