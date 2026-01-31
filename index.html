@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>我的世界服务器 - 液态玻璃风格</title>
+    <!-- 引入Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- 引入Font Awesome图标 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <!-- 自定义Tailwind配置 -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#007AFF', // iOS主题蓝
+                        secondary: '#34C759', // 我的世界绿
+                        dark: '#1C1C1E',
+                        light: '#F5F5F7',
+                    },
+                    fontFamily: {
+                        inter: ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 0.8s ease-in-out',
+                        'float': 'float 3s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: '0', transform: 'translateY(20px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        },
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        },
+                    },
+                },
+            }
+        }
+    </script>
+    <!-- 自定义工具类（液态玻璃核心样式） -->
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .glass-effect {
+                backdrop-filter: blur(16px) saturate(180%);
+                -webkit-backdrop-filter: blur(16px) saturate(180%);
+                background-color: rgba(255, 255, 255, 0.15);
+                border: 1px solid rgba(255, 255, 255, 0.2);
+                box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
+            }
+            .glass-effect-dark {
+                backdrop-filter: blur(16px) saturate(180%);
+                -webkit-backdrop-filter: blur(16px) saturate(180%);
+                background-color: rgba(28, 28, 30, 0.15);
+                border: 1px solid rgba(28, 28, 30, 0.2);
+                box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.1);
+            }
+            .text-shadow {
+                text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            }
+            .card-hover {
+                transition: all 0.3s ease-in-out;
+            }
+            .card-hover:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 12px 40px 0 rgba(31, 38, 135, 0.15);
+            }
+        }
+    </style>
+    <style>
+        /* 全局样式重置 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            background: linear-gradient(135deg, #f0f8ff 0%, #e6f7ff 50%, #f5f5f7 100%);
+            background-attachment: fixed;
+            font-family: 'Inter', system-ui, sans-serif;
+            overflow-x: hidden;
+        }
+        /* 背景装饰元素 */
+        .bg-circle {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(0, 122, 255, 0.05);
+            z-index: -1;
+        }
+        .bg-circle-1 {
+            width: 600px;
+            height: 600px;
+            top: -200px;
+            right: -200px;
+        }
+        .bg-circle-2 {
+            width: 400px;
+            height: 400px;
+            bottom: -150px;
+            left: -150px;
+        }
+        /* 滚动渐入触发 */
+        .fade-in-section {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.8s ease-in-out, transform 0.8s ease-in-out;
+        }
+        .fade-in-section.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body class="font-inter text-dark">
+    <!-- 背景装饰 -->
+    <div class="bg-circle bg-circle-1"></div>
+    <div class="bg-circle bg-circle-2"></div>
+
+    <!-- 导航栏（液态玻璃） -->
+    <nav class="fixed top-0 left-0 w-full z-50 py-4 px-6 md:px-12 glass-effect">
+        <div class="container mx-auto flex justify-between items-center">
+            <div class="flex items-center gap-2">
+                <i class="fa-solid fa-cube text-primary text-2xl"></i>
+                <h1 class="text-xl md:text-2xl font-bold text-shadow">MC·液态玻璃服务器</h1>
+            </div>
+            <div class="hidden md:flex gap-8 items-center">
+                <a href="#status" class="text-dark/80 hover:text-primary transition">服务器状态</a>
+                <a href="#features" class="text-dark/80 hover:text-primary transition">特色玩法</a>
+                <a href="#faq" class="text-dark/80 hover:text-primary transition">常见问题</a>
+                <a href="#contact" class="text-dark/80 hover:text-primary transition">联系我们</a>
+            </div>
+            <button class="md:hidden text-dark text-xl">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- 英雄区 -->
+    <header class="pt-32 pb-20 px-6 md:px-12">
+        <div class="container mx-auto text-center">
+            <div class="glass-effect rounded-3xl p-8 md:p-12 mb-12 card-hover animate-fade-in">
+                <img src="https://picsum.photos/1200/400?mc=1" alt="我的世界服务器横幅" class="w-full h-auto rounded-2xl mb-8 object-cover">
+                <h2 class="text-3xl md:text-5xl font-bold mb-4 text-shadow">欢迎加入 我的世界 液态玻璃服务器</h2>
+                <p class="text-lg md:text-xl text-dark/70 mb-8 max-w-3xl mx-auto">
+                    在这里，你可以尽情创造、探索、冒险，与来自各地的玩家一起打造属于我们的梦幻世界
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <button id="copyIpBtn" class="bg-primary text-white px-8 py-3 rounded-2xl hover:bg-primary/90 transition flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-copy"></i>
+                        <span>复制服务器IP</span>
+                    </button>
+                    <button id="refreshStatusBtn" class="glass-effect px-8 py-3 rounded-2xl hover:bg-white/20 transition flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-refresh"></i>
+                        <span>刷新状态</span>
+                    </button>
+                </div>
+                <p class="mt-4 text-sm text-dark/60" id="serverIpDisplay">服务器IP: mc.example.com:25565</p>
+            </div>
+        </div>
+    </header>
+
+    <!-- 核心功能：服务器状态查询 -->
+    <section id="status" class="py-16 px-6 md:px-12 fade-in-section">
+        <div class="container mx-auto">
+            <h2 class="text-2xl md:text-4xl font-bold text-center mb-12 text-shadow">服务器在线状态</h2>
+            <div class="glass-effect rounded-3xl p-8 md:p-12 max-w-4xl mx-auto card-hover">
+                <div class="flex flex-col md:flex-row justify-between items-center mb-8">
+                    <div class="text-center md:text-left mb-6 md:mb-0">
+                        <h3 class="text-xl md:text-2xl font-semibold mb-2">服务器状态</h3>
+                        <div id="serverStatus" class="flex items-center justify-center md:justify-start gap-2 text-lg">
+                            <span class="w-3 h-3 rounded-full bg-red-500 animate-pulse"></span>
+                            <span>正在查询...</span>
+                        </div>
+                    </div>
+                    <div class="text-center md:text-right">
+                        <h3 class="text-xl md:text-2xl font-semibold mb-2">延迟</h3>
+                        <div id="serverPing" class="text-lg">
+                            <i class="fa-solid fa-spinner fa-spin"></i> 正在检测
+                        </div>
+                    </div>
+                </div>
+
+                <hr class="border-white/30 mb-8">
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 mb-8">
+                    <div class="glass-effect rounded-2xl p-6 text-center card-hover">
+                        <h4 class="text-dark/70 mb-2 text-sm">在线人数</h4>
+                        <p id="serverOnline" class="text-2xl font-bold">0</p>
+                    </div>
+                    <div class="glass-effect rounded-2xl p-6 text-center card-hover">
+                        <h4 class="text-dark/70 mb-2 text-sm">最大人数</h4>
+                        <p id="serverMax" class="text-2xl font-bold">200</p>
+                    </div>
+                    <div class="glass-effect rounded-2xl p-6 text-center card-hover">
+                        <h4 class="text-dark/70 mb-2 text-sm">服务器版本</h4>
+                        <p id="serverVersion" class="text-2xl font-bold">1.20.1</p>
+                    </div>
+                    <div class="glass-effect rounded-2xl p-6 text-center card-hover">
+                        <h4 class="text-dark/70 mb-2 text-sm">模组数量</h4>
+                        <p id="serverMods" class="text-2xl font-bold">0</p>
+                    </div>
+                </div>
+
+                <div class="glass-effect rounded-2xl p-6">
+                    <h4 class="text-lg font-semibold mb-4">在线玩家列表</h4>
+                    <div id="playerList" class="min-h-24 flex items-center justify-center">
+                        <p class="text-dark/60">正在加载玩家信息...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 服务器特色玩法 -->
+    <section id="features" class="py-16 px-6 md:px-12 fade-in-section">
+        <div class="container mx-auto">
+            <h2 class="text-2xl md:text-4xl font-bold text-center mb-12 text-shadow">特色玩法</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="glass-effect rounded-3xl p-8 card-hover">
+                    <div class="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center mb-6">
+                        <i class="fa-solid fa-house-chimney text-primary text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">自由建造</h3>
+                    <p class="text-dark/70">
+                        无限空间，自由发挥你的创意，建造属于自己的城堡、别墅、城市，没有任何限制
+                    </p>
+                </div>
+                <div class="glass-effect rounded-3xl p-8 card-hover">
+                    <div class="w-16 h-16 bg-secondary/10 rounded-2xl flex items-center justify-center mb-6">
+                        <i class="fa-solid fa-sword text-secondary text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">冒险闯关</h3>
+                    <p class="text-dark/70">
+                        精心制作的闯关地图，各种谜题和挑战，完成闯关可获得稀有道具和奖励
+                    </p>
+                </div>
+                <div class="glass-effect rounded-3xl p-8 card-hover">
+                    <div class="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center mb-6">
+                        <i class="fa-solid fa-users text-primary text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">多人联机</h3>
+                    <p class="text-dark/70">
+                        与好友一起联机游玩，组队冒险、互相交易、共建家园，体验不一样的我的世界
+                    </p>
+                </div>
+                <div class="glass-effect rounded-3xl p-8 card-hover">
+                    <div class="w-16 h-16 bg-secondary/10 rounded-2xl flex items-center justify-center mb-6">
+                        <i class="fa-solid fa-coins text-secondary text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">经济系统</h3>
+                    <p class="text-dark/70">
+                        完善的经济体系，通过挖矿、建造、完成任务获得货币，可在服务器商店购买道具
+                    </p>
+                </div>
+                <div class="glass-effect rounded-3xl p-8 card-hover">
+                    <div class="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center mb-6">
+                        <i class="fa-solid fa-shield-halved text-primary text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">安全稳定</h3>
+                    <p class="text-dark/70">
+                        24小时不间断运行，专业服务器托管，数据定期备份，保障你的游戏成果不丢失
+                    </p>
+                </div>
+                <div class="glass-effect rounded-3xl p-8 card-hover">
+                    <div class="w-16 h-16 bg-secondary/10 rounded-2xl flex items-center justify-center mb-6">
+                        <i class="fa-solid fa-gears text-secondary text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">定期更新</h3>
+                    <p class="text-dark/70">
+                        定期更新服务器内容，添加新玩法、新道具、新地图，保持游戏的新鲜感
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 常见问题 FAQ -->
+    <section id="faq" class="py-16 px-6 md:px-12 fade-in-section">
+        <div class="container mx-auto">
+            <h2 class="text-2xl md:text-4xl font-bold text-center mb-12 text-shadow">常见问题</h2>
+            <div class="glass-effect rounded-3xl p-8 md:p-12 max-w-3xl mx-auto">
+                <div class="space-y-6">
+                    <div class="faq-item border-b border-white/30 pb-6">
+                        <button class="faq-btn w-full flex justify-between items-center text-left font-semibold text-lg">
+                            <span>如何加入服务器？</span>
+                            <i class="fa-solid fa-chevron-down text-dark/50 transition-transform"></i>
+                        </button>
+                        <div class="faq-content mt-4 text-dark/70 hidden">
+                            <p>1. 确保你的《我的世界》版本与服务器版本一致（当前服务器版本：1.20.1）</p>
+                            <p class="mt-2">2. 打开游戏，点击"多人游戏" -> "添加服务器"</p>
+                            <p class="mt-2">3. 服务器名称可自定义，服务器地址填写：mc.example.com:25565</p>
+                            <p class="mt-2">4. 点击"完成"，然后双击服务器即可加入</p>
+                        </div>
+                    </div>
+                    <div class="faq-item border-b border-white/30 pb-6">
+                        <button class="faq-btn w-full flex justify-between items-center text-left font-semibold text-lg">
+                            <span>服务器需要安装模组吗？</span>
+                            <i class="fa-solid fa-chevron-down text-dark/50 transition-transform"></i>
+                        </button>
+                        <div class="faq-content mt-4 text-dark/70 hidden">
+                            <p>当前服务器为纯净版，无需安装任何模组，直接使用官方原版客户端即可加入。如果后续服务器更新为模组服，我们会在官网提前公告，并提供对应的模组包下载。</p>
+                        </div>
+                    </div>
+                    <div class="faq-item border-b border-white/30 pb-6">
+                        <button class="faq-btn w-full flex justify-between items-center text-left font-semibold text-lg">
+                            <span>我的建筑会被其他人破坏吗？</span>
+                            <i class="fa-solid fa-chevron-down text-dark/50 transition-transform"></i>
+                        </button>
+                        <div class="faq-content mt-4 text-dark/70 hidden">
+                            <p>服务器开启了领地保护系统，你可以使用指令圈定自己的领地，领地内只有你和你授权的玩家可以进行建造和破坏操作，有效保障你的建筑安全。具体领地指令可在加入服务器后输入 /help 查看。</p>
+                        </div>
+                    </div>
+                    <div class="faq-item border-b border-white/30 pb-6">
+                        <button class="faq-btn w-full flex justify-between items-center text-left font-semibold text-lg">
+                            <span>服务器有管理员吗？遇到问题如何反馈？</span>
+                            <i class="fa-solid fa-chevron-down text-dark/50 transition-transform"></i>
+                        </button>
+                        <div class="faq-content mt-4 text-dark/70 hidden">
+                            <p>服务器有24小时在线的管理员和客服团队，遇到问题可以通过以下方式反馈：</p>
+                            <p class="mt-2">1. 服务器内输入 /report 提交问题</p>
+                            <p class="mt-2">2. 加入我们的QQ群：123456789</p>
+                            <p class="mt-2">3. 点击页面底部"联系我们"提交表单</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-btn w-full flex justify-between items-center text-left font-semibold text-lg">
+                            <span>服务器会删档吗？</span>
+                            <i class="fa-solid fa-chevron-down text-dark/50 transition-transform"></i>
+                        </button>
+                        <div class="faq-content mt-4 text-dark/70 hidden">
+                            <p>服务器原则上不会进行删档操作，数据会定期进行多重备份。只有在重大版本更新（如跨版本升级）无法兼容旧数据时，才会考虑删档，且会提前7天在官网和QQ群发布公告，并对老玩家给予相应补偿。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 联系我们 -->
+    <section id="contact" class="py-16 px-6 md:px-12 fade-in-section">
+        <div class="container mx-auto">
+            <h2 class="text-2xl md:text-4xl font-bold text-center mb-12 text-shadow">联系我们</h2>
+            <div class="glass-effect rounded-3xl p-8 md:p-12 max-w-2xl mx-auto card-hover">
+                <form class="space-y-6">
+                    <div>
+                        <label for="name" class="block text-dark/70 mb-2 text-sm">姓名</label>
+                        <input type="text" id="name" class="w-full glass-effect rounded-xl p-4 border-0 focus:outline-none focus:ring-2 focus:ring-primary/50" placeholder="请输入你的姓名">
+                    </div>
+                    <div>
+                        <label for="email" class="block text-dark/70 mb-2 text-sm">邮箱</label>
+                        <input type="email" id="email" class="w-full glass-effect rounded-xl p-4 border-0 focus:outline-none focus:ring-2 focus:ring-primary/50" placeholder="请输入你的邮箱">
+                    </div>
+                    <div>
+                        <label for="message" class="block text-dark/70 mb-2 text-sm">留言内容</label>
+                        <textarea id="message" rows="5" class="w-full glass-effect rounded-xl p-4 border-0 focus:outline-none focus:ring-2 focus:ring-primary/50" placeholder="请输入你要反馈的问题或建议"></textarea>
+                    </div>
+                    <button type="submit" class="w-full bg-primary text-white py-4 rounded-xl hover:bg-primary/90 transition">提交留言</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- 页脚 -->
+    <footer class="py-8 px-6 md:px-12 glass-effect mt-16">
+        <div class="container mx-auto text-center">
+            <div class="flex justify-center gap-6 mb-6">
+                <a href="#" class="text-dark/70 hover:text-primary transition text-xl">
+                    <i class="fa-solid fa-qq"></i>
+                </a>
+                <a href="#" class="text-dark/70 hover:text-primary transition text-xl">
+                    <i class="fa-solid fa-wechat"></i>
+                </a>
+                <a href="#" class="text-dark/70 hover:text-primary transition text-xl">
+                    <i class="fa-solid fa-github"></i>
+                </a>
+            </div>
+            <p class="text-dark/60 text-sm">
+                © 2026 MC液态玻璃服务器. 保留所有权利.
+            </p>
+            <p class="text-dark/50 text-xs mt-2">
+                本网站采用仿iOS 26液态玻璃风格设计，仅用于展示我的世界服务器信息
+            </p>
+        </div>
+    </footer>
+
+    <!-- 复制成功提示弹窗 -->
+    <div id="copyToast" class="fixed bottom-8 left-1/2 transform -translate-x-1/2 glass-effect px-6 py-3 rounded-xl hidden">
+        <p class="flex items-center gap-2 text-dark">
+            <i class="fa-solid fa-check text-green-500"></i>
+            <span>服务器IP复制成功！</span>
+        </p>
+    </div>
+
+    <!-- JavaScript 功能实现 -->
+    <script>
+        // 配置项 - 在这里修改你的服务器IP
+        const SERVER_IP = "mc.example.com"; // 替换为你的我的世界服务器IP（无需加端口，默认25565）
+        const SERVER_PORT = "25565"; // 服务器端口
+        const FULL_SERVER_IP = `${SERVER_IP}:${SERVER_PORT}`;
+
+        // 页面加载完成后执行
+        document.addEventListener('DOMContentLoaded', function() {
+            // 初始化显示服务器IP
+            document.getElementById('serverIpDisplay').textContent = `服务器IP: ${FULL_SERVER_IP}`;
+
+            // 查询服务器状态
+            fetchServerStatus();
+
+            // 刷新状态按钮点击事件
+            document.getElementById('refreshStatusBtn').addEventListener('click', function() {
+                fetchServerStatus();
+            });
+
+            // 复制IP按钮点击事件
+            document.getElementById('copyIpBtn').addEventListener('click', function() {
+                navigator.clipboard.writeText(FULL_SERVER_IP).then(function() {
+                    // 显示提示弹窗
+                    const toast = document.getElementById('copyToast');
+                    toast.classList.remove('hidden');
+                    setTimeout(function() {
+                        toast.classList.add('hidden');
+                    }, 2000);
+                }).catch(function(err) {
+                    console.error('复制失败:', err);
+                    alert('复制失败，请手动复制：' + FULL_SERVER_IP);
+                });
+            });
+
+            // FAQ 折叠面板功能
+            const faqBtns = document.querySelectorAll('.faq-btn');
+            faqBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const content = this.nextElementSibling;
+                    const icon = this.querySelector('i');
+
+                    // 切换显示/隐藏
+                    content.classList.toggle('hidden');
+                    // 切换图标旋转
+                    icon.style.transform = content.classList.contains('hidden') ? 'rotate(0deg)' : 'rotate(180deg)';
+                });
+            });
+
+            // 滚动渐入效果
+            const fadeElements = document.querySelectorAll('.fade-in-section');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            fadeElements.forEach(element => {
+                observer.observe(element);
+            });
+        });
+
+        /**
+         * 查询我的世界服务器状态
+         * 使用 mcsrvstat.us 公开API
+         */
+        function fetchServerStatus() {
+            // 加载状态提示
+            const statusElement = document.getElementById('serverStatus');
+            const pingElement = document.getElementById('serverPing');
+            const onlineElement = document.getElementById('serverOnline');
+            const maxElement = document.getElementById('serverMax');
+            const versionElement = document.getElementById('serverVersion');
+            const modsElement = document.getElementById('serverMods');
+            const playerListElement = document.getElementById('playerList');
+
+            // 重置为加载状态
+            statusElement.innerHTML = '<span class="w-3 h-3 rounded-full bg-yellow-500 animate-pulse"></span><span>正在查询...</span>';
+            pingElement.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> 正在检测';
+            onlineElement.textContent = '...';
+            playerListElement.innerHTML = '<p class="text-dark/60">正在加载玩家信息...</p>';
+
+            // 调用API查询状态
+            fetch(`https://api.mcsrvstat.us/2/${SERVER_IP}`)
+                .then(response => response.json())
+                .then(data => {
+                    console.log('服务器状态数据:', data);
+
+                    // 更新服务器状态
+                    if (data.online) {
+                        // 服务器在线
+                        statusElement.innerHTML = '<span class="w-3 h-3 rounded-full bg-green-500"></span><span>服务器在线</span>';
+                        statusElement.classList.add('text-green-600');
+
+                        // 更新在线人数/最大人数
+                        onlineElement.textContent = data.players.online || 0;
+                        maxElement.textContent = data.players.max || 200;
+
+                        // 更新服务器版本
+                        versionElement.textContent = data.version || '未知版本';
+
+                        // 更新模组数量
+                        const modCount = data.mods ? (data.mods.count || 0) : 0;
+                        modsElement.textContent = modCount;
+
+                        // 更新延迟
+                        if (data.ping) {
+                            pingElement.textContent = `${data.ping} ms`;
+                        } else {
+                            pingElement.textContent = '检测失败';
+                        }
+
+                        // 更新在线玩家列表
+                        if (data.players.list && data.players.list.length > 0) {
+                            playerListElement.innerHTML = `
+                                <div class="flex flex-wrap gap-2 justify-center">
+                                    ${data.players.list.map(player => `
+                                        <span class="glass-effect px-3 py-1 rounded-full text-sm">${player}</span>
+                                    `).join('')}
+                                </div>
+                            `;
+                        } else {
+                            playerListElement.innerHTML = '<p class="text-dark/60">当前暂无玩家在线</p>';
+                        }
+                    } else {
+                        // 服务器离线
+                        statusElement.innerHTML = '<span class="w-3 h-3 rounded-full bg-red-500"></span><span>服务器离线</span>';
+                        statusElement.classList.add('text-red-600');
+
+                        // 重置离线状态下的信息
+                        onlineElement.textContent = '0';
+                        maxElement.textContent = '200';
+                        versionElement.textContent = '未知';
+                        modsElement.textContent = '0';
+                        pingElement.textContent = '无法连接';
+                        playerListElement.innerHTML = '<p class="text-dark/60">服务器离线，无法获取玩家信息</p>';
+                    }
+                })
+                .catch(error => {
+                    console.error('查询服务器状态失败:', error);
+                    statusElement.innerHTML = '<span class="w-3 h-3 rounded-full bg-red-500"></span><span>查询失败</span>';
+                    pingElement.textContent = '查询失败';
+                    playerListElement.innerHTML = '<p class="text-dark/60">无法连接到状态服务器</p>';
+                });
+        }
+    </script>
+</body>
+</html>
